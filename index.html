@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ramez Tech | متجر الشحن الرقمي المتقدم</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">RAMEZ<span>_TECH</span></div>
+        <div class="nav-auth" id="navAuthSection">
+            <button class="btn btn-outline" onclick="openModal('loginModal')">تسجيل الدخول</button>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <h1>منصة الشحن <span>المستقبلية</span></h1>
+        <p>بوابتك الفورية لشحن الألعاب والحزم الرقمية بسرعة فائقة وأمان مالي مطلق.</p>
+    </header>
+
+    <main class="catalog-container">
+        <h2 class="section-title">الخدمات المتوفرة</h2>
+        <div class="services-grid" id="servicesGrid">
+            <p style="color: var(--text-muted);">جاري الاتصال بالسيرفر وجلب الخدمات الحية...</p>
+        </div>
+    </main>
+
+    <div class="modal-overlay" id="orderModal">
+        <div class="modal">
+            <button class="close-btn" onclick="closeModal('orderModal')">✕</button>
+            <h3 class="modal-title" id="orderModalTitle">شحن الخدمة</h3>
+            <div class="form-group">
+                <label for="targetPlayerId">معرّف اللاعب المستهدف (Player ID)</label>
+                <input type="text" id="targetPlayerId" class="form-input" placeholder="أدخل رقم الـ ID هنا">
+            </div>
+            <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;" id="confirmOrderBtn">تأكيد طلب الشحن الفوري</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal">
+            <button class="close-btn" onclick="closeModal('loginModal')">✕</button>
+            <h3 class="modal-title">ولوج بوابة المستخدم</h3>
+            <div class="form-group">
+                <label for="loginUser">اسم المستخدم</label>
+                <input type="text" id="loginUser" class="form-input" placeholder="username">
+            </div>
+            <div class="form-group">
+                <label for="loginPass">كلمة المرور</label>
+                <input type="password" id="loginPass" class="form-input" placeholder="••••••••">
+            </div>
+            <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;" onclick="handleLogin()">دخول آمن</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
