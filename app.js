@@ -1,4 +1,11 @@
-const API_BASE_URL = "";
+// Auto-detect the base path so the app works when hosted under a sub-path
+// (e.g. /topup-store/ or /)
+const API_BASE_URL = (() => {
+    let p = window.location.pathname;
+    if (p.endsWith("index.html")) p = p.replace(/index\.html$/i, "");
+    if (!p.endsWith("/")) p += "/";
+    return p;
+})();
 
 let currentSelectedService = null;
 let userToken = localStorage.getItem("user_token") || null;
@@ -33,16 +40,17 @@ function formatMoney(value) {
 function getImageUrl(imageUrl) {
     if (!imageUrl) return null;
     if (imageUrl.startsWith("http")) return imageUrl;
-    if (imageUrl.startsWith("/")) return `${API_BASE_URL}${imageUrl}`;
-    return `${API_BASE_URL}/${imageUrl}`;
+    // Strip a leading slash so it becomes relative to the current base path
+    let src = imageUrl.startsWith("/") ? imageUrl.slice(1) : imageUrl;
+    return `${API_BASE_URL}${src}`;
 }
 
 // Fetch categories and services
 async function fetchCategoriesAndServices() {
     try {
         const [catRes, svcRes] = await Promise.all([
-            fetch(`${API_BASE_URL}/categories`),
-            fetch(`${API_BASE_URL}/services?active_only=true`),
+            fetch(`${API_BASE_URL}categories/`),
+            fetch(`${API_BASE_URL}services/?active_only=true`),
         ]);
 
         if (!catRes.ok || !svcRes.ok) throw new Error("فشل في جلب البيانات");
@@ -166,7 +174,7 @@ async function handleLogin() {
     formData.append("password", pass);
 
     try {
-        const response = await fetch(`${API_BASE_URL}/auth/login`, {
+        const response = await fetch(`${API_BASE_URL}auth/login`, {
             method: "POST",
             body: formData,
         });
@@ -196,7 +204,7 @@ async function handleRegister() {
     }
 
     try {
-        const response = await fetch(`${API_BASE_URL}/auth/register`, {
+        const response = await fetch(`${API_BASE_URL}auth/register`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ username, email, password }),
@@ -226,7 +234,7 @@ async function updateAuthNavbar() {
     }
 
     try {
-        const response = await fetch(`${API_BASE_URL}/auth/me`, {
+        const response = await fetch(`${API_BASE_URL}auth/me`, {
             headers: { "Authorization": `Bearer ${userToken}` }
         });
         if (!response.ok) throw new Error();
@@ -263,7 +271,7 @@ async function handleOrder() {
     if (!currentSelectedService) return;
 
     try {
-        const response = await fetch(`${API_BASE_URL}/orders`, {
+        const response = await fetch(`${API_BASE_URL}orders/`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
